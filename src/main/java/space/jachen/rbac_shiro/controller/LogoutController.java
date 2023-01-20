@@ -12,19 +12,19 @@ import space.jachen.rbac_shiro.utils.JsonData;
 public class LogoutController {
 
 
-    @RequestMapping("/logout")
-    public JsonData findMyPlayRecord(){
-
-        Subject subject = SecurityUtils.getSubject();
-
-        if(subject.getPrincipals() != null ){
-
-        }
-
-        SecurityUtils.getSubject().logout();
-
-        return JsonData.buildSuccess("logout成功");
-
-    }
+//    @RequestMapping("/logout")
+//    public JsonData findMyPlayRecord(){
+//
+//        Subject subject = SecurityUtils.getSubject();
+//
+//        if(subject.getPrincipals() != null ){
+//
+//        }
+//
+//        SecurityUtils.getSubject().logout();
+//
+//        return JsonData.buildSuccess("logout成功");
+//
+//    }
 
 }
