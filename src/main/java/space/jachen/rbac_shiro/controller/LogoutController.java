@@ -12,6 +12,7 @@ import space.jachen.rbac_shiro.utils.JsonData;
 public class LogoutController {
 
 
+
 //    @RequestMapping("/logout")
 //    public JsonData findMyPlayRecord(){
 //
