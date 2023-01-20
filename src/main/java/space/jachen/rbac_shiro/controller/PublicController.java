@@ -75,6 +75,7 @@ public class PublicController {
             subject.login(usernamePasswordToken);
 
             info.put("msg","登录成功");
+            // session_id 在内存中 重启会丢失
             info.put("session_id", subject.getSession().getId());
 
             return JsonData.buildSuccess(info);

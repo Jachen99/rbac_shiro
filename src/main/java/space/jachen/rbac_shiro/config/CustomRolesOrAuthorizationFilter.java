@@ -8,6 +8,8 @@ import javax.servlet.ServletResponse;
 
 /**
  *
+ * 自定义filter
+ *
  * 背景知识：
  * /admin/order= roles["admin, root"] ，表示 /admin/order 这个接口
  * 需要用户同时具备 admin 与 root 角色才可访问, 相当于hasAllRoles() 这个判断方法

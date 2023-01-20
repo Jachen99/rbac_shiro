@@ -2,7 +2,6 @@ package space.jachen.rbac_shiro.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -10,6 +9,7 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -43,6 +43,12 @@ public class ShiroConfig {
         // 登录后没有权限 未授权走此接口  403
         shiroFilterFactoryBean.setUnauthorizedUrl("pub/not_permit");
 
+        // 1、设置自定义filter javax.servlet.Filter;
+        Map<String, Filter> filterMap = new LinkedHashMap<>();
+        filterMap.put("roleOrFilter",new CustomRolesOrAuthorizationFilter());
+        // 2、自定义filter与shiroFilterChain绑定
+        shiroFilterFactoryBean.setFilters(filterMap);
+
         // 拦截器路径 不能用hashmap
         Map<String,String> filterChainDefinitionMap =
                 new LinkedHashMap<>();
@@ -53,7 +59,7 @@ public class ShiroConfig {
         // 3、登录用户才能访问
         filterChainDefinitionMap.put("/authc/**","authc");
         // 4、管理员角色才能访问
-        filterChainDefinitionMap.put("/admin/**","roles[admin]");
+        filterChainDefinitionMap.put("/admin/**","roleOrFilter[admin,root]");
         // 5、有编辑权限才能访问
         filterChainDefinitionMap.put("/video/update","perms[video_update]");
         // .......等等  过滤链顺序执行 一般/**放在最后面
