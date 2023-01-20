@@ -28,7 +28,6 @@ import java.util.Map;
 @Slf4j
 public class ShiroConfig {
 
-
     /**
      * 管理shiro一些bean的生命周期 即bean初始化 与销毁
      * @return
@@ -221,6 +220,9 @@ public class ShiroConfig {
     public RedisSessionDAO redisSessionDAO(){
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisManager(getRedisManager());
+
+        // 设置sessionId生成器
+        redisSessionDAO.setSessionIdGenerator(new CustomSessionIdGenerator());
         return redisSessionDAO;
     }
 
