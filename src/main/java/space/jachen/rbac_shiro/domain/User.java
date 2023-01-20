@@ -2,6 +2,7 @@ package space.jachen.rbac_shiro.domain;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * 用户
  */
 @Data
-public class User {
+public class User implements Serializable {
 
     private int id;
 
