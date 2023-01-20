@@ -6,6 +6,8 @@ import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.crazycake.shiro.RedisCacheManager;
+import org.crazycake.shiro.RedisManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,6 +22,35 @@ import java.util.Map;
 @Configuration
 @Slf4j
 public class ShiroConfig {
+
+
+
+    /**
+     * 配置redisManager
+     *
+     */
+    public RedisManager getRedisManager(){
+        RedisManager redisManager = new RedisManager();
+        redisManager.setHost("192.168.253.134");
+        redisManager.setPort(6379);
+        return redisManager;
+    }
+
+
+    /**
+     * 配置具体cache实现类
+     * @return
+     */
+    public RedisCacheManager cacheManager(){
+        RedisCacheManager redisCacheManager = new RedisCacheManager();
+        //使用自定义的cacheManager
+        redisCacheManager.setRedisManager(getRedisManager());
+
+        //设置过期时间，单位是秒，20s,数据及时同步
+        redisCacheManager.setExpire(20);
+
+        return redisCacheManager;
+    }
 
 
 
@@ -80,6 +111,9 @@ public class ShiroConfig {
 
         // 一定调用的时Web的Manage
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
+
+        //使用自定义的cacheManager
+        defaultWebSecurityManager.setCacheManager(cacheManager());
 
         // 前后端分离要设置
         defaultWebSecurityManager.setSessionManager(sessionManager());

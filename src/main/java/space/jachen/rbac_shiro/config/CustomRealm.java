@@ -9,8 +9,6 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 import space.jachen.rbac_shiro.domain.Permission;
 import space.jachen.rbac_shiro.domain.Role;
@@ -45,9 +43,9 @@ public class CustomRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principal) {
 
         log.info("授权调用 : doGetAuthorizationInfo");
-        String username = (String) principal.getPrimaryPrincipal();
+        User u = (User) principal.getPrimaryPrincipal();
 
-        User user = userService.findSimpleUserInfoByUsername(username);
+        User user = userService.findAllUserInfoByUsername(u.getUsername());
 
         ArrayList<String> stringRoleList = new ArrayList<>();
         ArrayList<String> stringPermissionList = new ArrayList<>();
@@ -87,7 +85,7 @@ public class CustomRealm extends AuthorizingRealm {
         String username = (String) token.getPrincipal();
 
         // 2、根据username从数据库查出用户对象
-        User info = userService.findSimpleUserInfoByUsername(username);
+        User info = userService.findAllUserInfoByUsername(username);
         String password = info.getPassword();
         if (StringUtils.isEmpty(password)){
             return null;
